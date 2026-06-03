@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../content/overlay.css" />
+  <link rel="stylesheet" href="canvas.css" />
+</head>
+<body>
+
+  <!-- Warning Banner -->
+  <div id="unsupported-banner" class="banner hidden">
+    <div class="banner-content">
+      <div class="banner-text">
+        <strong>Extension not supported on tab</strong>
+        <p>Your previous tab did not support the Aura extension. You can start your recording here and return to your selected tab, but your camera will not be visible.</p>
+      </div>
+      <button id="close-banner-btn" class="close-btn" title="Dismiss">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Drawing Surface -->
+  <main class="canvas-main" id="canvas-container">
+    <canvas id="whiteboard"></canvas>
+    
+    <!-- Text overlays will be injected here -->
+    <div id="text-layer"></div>
+  </main>
+
+  <!-- Background Picker Panel (Slides up) -->
+  <div id="bg-picker-panel" class="picker-panel hidden">
+    <div class="picker-section">
+      <span>Colors</span>
+      <div class="swatches">
+        <button class="swatch color-offwhite" data-bg="#f8f9fa" title="Off-White"></button>
+        <button class="swatch color-charcoal" data-bg="#18181b" title="Dark Charcoal"></button>
+        <button class="swatch color-slate" data-bg="#1e293b" title="Slate Blue"></button>
+        <button class="swatch color-forest" data-bg="#064e3b" title="Forest Green"></button>
+      </div>
+    </div>
+    <div class="divider-v"></div>
+    <div class="picker-section">
+      <span>Gradients</span>
+      <div class="swatches">
+        <button class="swatch grad-sunset" data-bg="linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)" title="Sunset Glow"></button>
+        <button class="swatch grad-ocean" data-bg="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" title="Deep Ocean"></button>
+        <button class="swatch grad-lavender" data-bg="linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)" title="Lavender Mist"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Toolbar -->
+  <div class="bottom-toolbar">
+    <button class="tool-btn" id="btn-background">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      Background
+    </button>
+    
+    <div class="divider"></div>
+    
+    <button class="tool-btn" id="btn-text">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <polyline points="4 7 4 4 20 4 20 7"/>
+        <line x1="9" y1="20" x2="15" y2="20"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+      </svg>
+      Text layout
+    </button>
+  </div>
+
+  <!-- Popup Sidebar iframe -->
+  <iframe src="../popup/popup.html" class="recording-sidebar" frameBorder="0"></iframe>
+
+  <script src="../content/content.js" type="module"></script>
+  <script src="canvas.js" type="module"></script>
+</body>
+</html>

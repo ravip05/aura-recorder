@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Recorder — Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="player.css" />
+</head>
+<body>
+
+  <!-- ===== TOP NAV ===== -->
+  <nav class="topnav">
+    <div class="topnav-left">
+      <div class="brand-dot"></div>
+      <span class="brand-name">Aura</span>
+      <span class="brand-sep">·</span>
+      <span class="brand-sub">Editor</span>
+    </div>
+    <div class="topnav-right">
+      <button class="nav-btn" id="btn-gallery" title="My Recordings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span>Gallery</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN EDITOR VIEW ===== -->
+  <main class="editor-main" id="player-view">
+    
+    <!-- Empty state -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">
+        <svg viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="36" stroke="rgba(157,78,221,0.3)" stroke-width="2"/>
+          <polygon points="33,26 33,54 56,40" fill="rgba(157,78,221,0.4)"/>
+        </svg>
+      </div>
+      <h2 class="empty-title">No Recording Selected</h2>
+      <p class="empty-sub">Select a recording from your Gallery to preview and edit.</p>
+    </div>
+
+    <!-- Video Title Bar -->
+    <div class="title-container" id="title-container" style="display:none">
+      <input type="text" class="video-title-input" id="video-title-input" value="" placeholder="Untitled Recording" spellcheck="false" />
+      <span class="save-status" id="save-status">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Saved
+      </span>
+    </div>
+
+    <!-- Video Canvas -->
+    <div class="video-container" id="player-canvas" style="display:none">
+      <video class="main-video" id="player-video" playsinline></video>
+      <canvas id="export-canvas" style="display:none"></canvas>
+    </div>
+
+    <!-- Timeline & Controls -->
+    <div class="editor-controls" id="editor-controls" style="display:none">
+      
+      <!-- Action Bar -->
+      <div class="action-bar">
+        <div class="action-left">
+          <button class="icon-btn" id="pb-play" title="Play / Pause">
+            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>
+            <svg class="pause-icon" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+          </button>
+          <span class="time-display">
+            <span id="pb-current">0:00</span> / <span id="pb-duration">0:00</span>
+          </span>
+        </div>
+        
+        <div class="action-right">
+          <button class="action-btn secondary" id="btn-copy-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Copy Link
+          </button>
+          <button class="action-btn primary" id="btn-download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Trim & Download
+          </button>
+          <button class="action-btn danger icon-only" id="btn-delete" title="Delete Recording">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trimming Timeline -->
+      <div class="timeline-container">
+        <div class="timeline-track" id="timeline-track">
+          <!-- Represents the full duration -->
+          <div class="timeline-bg"></div>
+          
+          <!-- Represents the selected trim range -->
+          <div class="timeline-selection" id="timeline-selection"></div>
+          
+          <!-- Playhead -->
+          <div class="timeline-playhead" id="timeline-playhead"></div>
+          
+          <!-- Trim handles -->
+          <div class="trim-handle start" id="trim-start-handle">
+            <div class="handle-line"></div>
+          </div>
+          <div class="trim-handle end" id="trim-end-handle">
+            <div class="handle-line"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ===== GALLERY MODAL ===== -->
+  <div class="gallery-overlay" id="gallery-overlay">
+    <div class="gallery-modal" id="gallery-modal">
+      <div class="gallery-header">
+        <h2 class="gallery-title">My Recordings</h2>
+        <button class="gallery-close" id="gallery-close" title="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="gallery-body" id="gallery-body">
+        <div class="gallery-empty" id="gallery-empty">
+          <p>No recordings yet. Open the extension to record your first video!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== EXPORT PROGRESS MODAL ===== -->
+  <div class="export-overlay" id="export-overlay">
+    <div class="export-modal">
+      <h3 class="export-title">Exporting Video</h3>
+      <div class="export-progress-bar">
+        <div class="export-progress-fill" id="export-progress-fill"></div>
+      </div>
+      <div class="export-status">
+        <span id="export-percent">0%</span>
+      </div>
+      <p class="export-warning">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Please keep this tab active. Switching tabs may pause the export.
+      </p>
+    </div>
+  </div>
+
+  <script src="player.js" type="module"></script>
+</body>
+</html>

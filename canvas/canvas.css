@@ -1,0 +1,276 @@
+/* canvas.css - Aura Canvas Whiteboard Styles */
+:root {
+  --bg-base: #f8f9fa; /* Default light */
+  --bg-panel: rgba(255, 255, 255, 0.6);
+  --bg-hover: rgba(255, 255, 255, 0.8);
+  
+  --border-subtle: rgba(0, 0, 0, 0.1);
+  --accent-orange: #f97316;
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  
+  --t-fast: 150ms ease-out;
+}
+
+/* Base resets */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Outfit', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-base);
+  transition: background 0.3s ease;
+  position: relative;
+}
+
+.hidden { display: none !important; }
+
+/* Warning Banner */
+.banner {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  background: rgba(30, 30, 40, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-orange);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  color: #fff;
+  padding: 16px 20px;
+  animation: slideDown 0.4s ease-out;
+}
+@keyframes slideDown {
+  from { top: -100px; opacity: 0; }
+  to { top: 20px; opacity: 1; }
+}
+.banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.banner-text strong {
+  display: block;
+  font-size: 16px;
+  color: var(--accent-orange);
+  margin-bottom: 6px;
+}
+.banner-text p {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  color: #f2f2f7;
+}
+.banner-text .banner-subtext {
+  font-size: 13px;
+  color: #a1a1aa;
+}
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #a1a1aa;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: all var(--t-fast);
+}
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.close-btn svg { width: 20px; height: 20px; }
+
+/* Canvas Area */
+.canvas-main {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 10;
+}
+#whiteboard {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+/* Bottom Toolbar */
+.bottom-toolbar {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+.bottom-toolbar .divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-subtle);
+}
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.tool-btn:hover, .tool-btn.active {
+  background: rgba(0, 0, 0, 0.05);
+}
+.tool-btn svg { width: 18px; height: 18px; }
+
+/* Background Picker Panel */
+.picker-panel {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  z-index: 99;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.picker-panel.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+  pointer-events: none;
+}
+.picker-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.picker-section span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.swatches {
+  display: flex;
+  gap: 10px;
+}
+.swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform var(--t-fast), border-color var(--t-fast);
+}
+.swatch:hover {
+  transform: scale(1.1);
+  border-color: rgba(0,0,0,0.3);
+}
+.color-offwhite { background: #f8f9fa; }
+.color-charcoal { background: #18181b; }
+.color-slate    { background: #1e293b; }
+.color-forest   { background: #064e3b; }
+.grad-sunset    { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); }
+.grad-ocean     { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.grad-lavender  { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+
+.divider-v {
+  width: 1px;
+  background: var(--border-subtle);
+}
+
+#text-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Text Layout Styles */
+.canvas-title {
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--text-primary);
+  pointer-events: auto;
+  outline: none;
+  text-align: center;
+  min-width: 300px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  transition: background var(--t-fast);
+}
+.canvas-title:empty:before {
+  content: attr(data-placeholder);
+  color: #a1a1aa;
+}
+.canvas-title:focus {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.canvas-body {
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  pointer-events: auto;
+  outline: none;
+  text-align: center;
+  min-width: 300px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  transition: background var(--t-fast);
+}
+.canvas-body:empty:before {
+  content: attr(data-placeholder);
+  color: #a1a1aa;
+}
+.canvas-body:focus {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Sidebar iframe */
+.recording-sidebar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 380px;
+  height: 600px;
+  max-height: calc(100vh - 40px);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: transparent;
+  z-index: 900;
+}

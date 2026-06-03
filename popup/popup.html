@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Recorder — Popup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- ===== TOP NAV ===== -->
+  <nav class="topnav">
+    <div class="topnav-left">
+      <div class="brand-dot"></div>
+      <span class="brand-name">Aura</span>
+    </div>
+    <div class="topnav-right">
+      <button class="nav-btn" id="btn-gallery" title="My Recordings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="popup-main">
+      
+    <div class="section">
+      <div class="mode-grid">
+        <button class="mode-btn active" data-mode="screen-camera">
+          <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor"/>
+            <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor"/>
+            <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor"/>
+            <circle cx="16" cy="11" r="3" fill="currentColor"/>
+          </svg>
+          Cam + Screen
+        </button>
+        <button class="mode-btn" data-mode="screen-only">
+          <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor"/>
+            <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor"/>
+            <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor"/>
+          </svg>
+          Screen Only
+        </button>
+        <button class="mode-btn" data-mode="camera-only">
+          <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+            <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-linejoin="round"/>
+            <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor"/>
+          </svg>
+          Camera Only
+        </button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="device-row" id="camera-row">
+        <div class="device-header">
+          <div class="device-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            <span>Camera</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="camera-toggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="select-wrapper">
+          <select id="camera-select">
+            <option value="">Default Camera</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <div class="device-row" id="mic-row">
+        <div class="device-header">
+          <div class="device-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            <span>Microphone</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="mic-toggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="select-wrapper">
+          <select id="mic-select">
+            <option value="">Default Microphone</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="action-footer">
+      <button id="start-record-btn" class="primary-btn">
+        <div class="btn-dot"></div>
+        <span class="btn-text">Start Recording</span>
+      </button>
+    </div>
+
+  </main>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

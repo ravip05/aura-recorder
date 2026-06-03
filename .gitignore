@@ -1,0 +1,16 @@
+node_modules/
+.DS_Store
+.claude/
+.github/
+AGENTS.md
+CHANGELOG.md
+CITATION.cff
+GEMINI.md
+MEMORY.md
+REVIEW-CHECKLIST.md
+agent_docs/
+docs/
+part1-deepresearch.md
+part2-prd-mvp.md
+part3-tech-design-mvp.md
+part4-notes-for-agent.md
