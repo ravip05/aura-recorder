@@ -14,16 +14,13 @@ Aura Recorder is a premium, lightweight Chrome Extension (Manifest V3) screen an
 ## Screenshots
 
 ### Main Interface
-![Main Interface](docs/screenshot-main.png)
-*(Please replace `docs/screenshot-main.png` with an actual screenshot of the extension popup or interface)*
+![Main Interface]
 
 ### Recording in Progress
-![Recording in Progress](docs/screenshot-recording.png)
-*(Please replace `docs/screenshot-recording.png` with an actual screenshot showing the camera bubble and glassmorphic controls)*
+![Recording in Progress]
 
 ### Presentation Mockup
-![Presentation Mockup](docs/screenshot-mockup.png)
-*(Please replace `docs/screenshot-mockup.png` with an actual screenshot of the player/mockup page)*
+![Presentation Mockup]
 
 ## Installation
 
