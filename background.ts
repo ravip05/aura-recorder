@@ -149,6 +149,10 @@ async function handleToggleCameraPreview(show: boolean, recSettings: RecorderSet
   if (activeTab?.id) {
     if (show) {
       await injectContentScript(activeTab.id);
+      
+      // Prevent showing bubble if popup was closed during injection
+      if (!isPreviewActive) return;
+
       chrome.tabs.sendMessage(activeTab.id, {
         action: 'SHOW_CAMERA_BUBBLE',
         settings: recSettings,
@@ -167,6 +171,31 @@ async function handleToggleCameraPreview(show: boolean, recSettings: RecorderSet
     }
   }
 }
+
+// ---- Popup Connection Resilience ----
+// Handles cases where the user clicks away from the popup, abruptly killing it.
+
+let isPreviewActive = false;
+
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name === 'popup-preview') {
+    isPreviewActive = true;
+    port.onDisconnect.addListener(async () => {
+      isPreviewActive = false;
+      const { isRecording } = await chrome.storage.local.get('isRecording');
+      if (!isRecording) {
+        // Broadcast HIDE to all tabs to guarantee cleanup
+        const tabs = await chrome.tabs.query({});
+        for (const t of tabs) {
+          if (t.id) {
+            chrome.tabs.sendMessage(t.id, { action: 'HIDE_CAMERA_BUBBLE' }).catch(() => {});
+          }
+        }
+        chrome.runtime.sendMessage({ action: 'HIDE_CAMERA_BUBBLE' }).catch(() => {});
+      }
+    });
+  }
+});
 
 // ---- Dynamic Popup / Canvas Routing ----
 // On regular http(s) pages: show the popup dropdown.

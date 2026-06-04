@@ -26,6 +26,7 @@ const startBtn = $('#start-record-btn');
 const galleryBtn = $('#btn-gallery');
 let settings = { ...DEFAULT_SETTINGS };
 let isStartingRecording = false;
+let previewPort = null;
 // ---- Initialization ----
 async function init() {
     await loadSettings();
@@ -43,6 +44,8 @@ async function init() {
     }
     await refreshDevices();
     updatePreview();
+    // Create a long-lived connection so background script knows when popup is closed
+    previewPort = chrome.runtime.connect({ name: 'popup-preview' });
     window.addEventListener('pagehide', () => {
         if (!isStartingRecording) {
             chrome.runtime.sendMessage({ action: 'TOGGLE_CAMERA_PREVIEW', show: false, settings }).catch(() => { });
@@ -143,6 +146,9 @@ micSelect.addEventListener('change', () => {
 });
 startBtn.addEventListener('click', () => {
     isStartingRecording = true;
+    if (previewPort) {
+        previewPort.disconnect(); // Disconnect early so onDisconnect ignores it since isRecording will be true
+    }
     settings.cameraDeviceId = cameraSelect.value;
     settings.micDeviceId = micSelect.value;
     saveSettings();

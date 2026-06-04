@@ -73,6 +73,14 @@
         </div>
         
         <div class="action-right">
+          <div class="export-select-container">
+            <select class="export-select" id="export-res" title="Export Resolution">
+              <option value="original">Original</option>
+              <option value="1080p">1080p (Full HD)</option>
+              <option value="720p">720p (HD)</option>
+              <option value="480p">480p (SD)</option>
+            </select>
+          </div>
           <button class="action-btn secondary" id="btn-copy-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
             Copy Link
@@ -90,6 +98,9 @@
       <!-- Trimming Timeline -->
       <div class="timeline-container">
         <div class="timeline-track" id="timeline-track">
+          <!-- Procedural soundwave waveform bars -->
+          <div class="timeline-waveform" id="timeline-waveform"></div>
+
           <!-- Represents the full duration -->
           <div class="timeline-bg"></div>
           
@@ -102,13 +113,29 @@
           <!-- Trim handles -->
           <div class="trim-handle start" id="trim-start-handle">
             <div class="handle-line"></div>
+            <div class="handle-tooltip" id="trim-start-tooltip">0:00</div>
           </div>
           <div class="trim-handle end" id="trim-end-handle">
             <div class="handle-line"></div>
+            <div class="handle-tooltip" id="trim-end-tooltip">0:00</div>
           </div>
         </div>
       </div>
 
+    </div>
+
+    <!-- Keyboard Shortcuts Guide -->
+    <div class="shortcuts-panel" id="shortcuts-panel" style="display:none">
+      <div class="shortcuts-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shortcuts-icon"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="6" y1="8" x2="6" y2="8"/><line x1="10" y1="8" x2="10" y2="8"/><line x1="14" y1="8" x2="14" y2="8"/><line x1="18" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="14" y2="12"/><line x1="18" y1="12" x2="18" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+        <span>Keyboard Editor Controls</span>
+      </div>
+      <div class="shortcuts-list">
+        <div class="shortcut-item"><kbd>Space</kbd> <span>Play / Pause</span></div>
+        <div class="shortcut-item"><kbd>←</kbd> <kbd>→</kbd> <span>Scrub 0.1s (Shift: 1s)</span></div>
+        <div class="shortcut-item"><kbd>[</kbd> <span>Set Trim Start</span></div>
+        <div class="shortcut-item"><kbd>]</kbd> <span>Set Trim End</span></div>
+      </div>
     </div>
 
   </main>
@@ -134,11 +161,15 @@
   <div class="export-overlay" id="export-overlay">
     <div class="export-modal">
       <h3 class="export-title">Exporting Video</h3>
+      <div class="export-preview-container">
+        <canvas id="export-preview-canvas"></canvas>
+      </div>
       <div class="export-progress-bar">
         <div class="export-progress-fill" id="export-progress-fill"></div>
       </div>
       <div class="export-status">
         <span id="export-percent">0%</span>
+        <span class="export-eta" id="export-eta">Calculating remaining time...</span>
       </div>
       <p class="export-warning">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
